@@ -16,3 +16,7 @@ csharp_brace_style = next_line
 
 # 在方法调用和定义中的括号之间没有空格
 csharp_space_before_colon = false
+
+# 强制使用表达式体方法，并将短方法放在一行
+csharp_style_expression_bodied_methods = true
+csharp_style_expression_bodied_properties = true
