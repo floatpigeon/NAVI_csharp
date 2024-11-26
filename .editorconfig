@@ -1,0 +1,18 @@
+# EditorConfig for C# files
+
+[*.cs]
+# 使用 4 个空格作为缩进
+indent_style = space
+indent_size = 4
+
+# 行末必须有一个换行符
+insert_final_newline = true
+
+# 使用 LF 作为行结束符
+end_of_line = lf
+
+# 在方法和控制结构的花括号之前需要一个空格
+csharp_brace_style = next_line
+
+# 在方法调用和定义中的括号之间没有空格
+csharp_space_before_colon = false
