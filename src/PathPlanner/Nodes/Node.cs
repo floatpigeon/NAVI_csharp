@@ -1,8 +1,6 @@
 using System.Numerics;
 using System.Collections.ObjectModel;
-using System.Collections.Generic;
-namespace PathPlanner
-{
+namespace PathPlanner.Nodes;
     class Node
     {
         public Vector2 Position { get; }
@@ -80,4 +78,3 @@ namespace PathPlanner
             return x.ValueF.CompareTo(y.ValueF);
         }
     }
-}
