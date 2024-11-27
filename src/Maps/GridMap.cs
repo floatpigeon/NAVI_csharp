@@ -1,8 +1,8 @@
 using System.Collections.ObjectModel;
 using System.Numerics;
-using PathPlanner.Node;
+using PathPlanner;
 
-namespace Maps.GridMap
+namespace Maps
 {
     enum State
     {
