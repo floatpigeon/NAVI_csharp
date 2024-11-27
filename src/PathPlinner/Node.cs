@@ -1,7 +1,7 @@
 using System.Numerics;
 using System.Collections.ObjectModel;
-
-namespace PathPlanner.Node
+using System.Collections.Generic;
+namespace PathPlanner
 {
     class Node
     {
@@ -9,7 +9,7 @@ namespace PathPlanner.Node
         public Node? Parent { get; }
         public double ValueH { get; private set; }
         public double ValueG { get; private set; }
-        public double ValueF { get; }
+        public double ValueF => ValueG + ValueH;
         public double Angle { get; private set; } = 0;
         public Node(float x, float y, Node? parent, Vector2 end)
         {
@@ -24,7 +24,7 @@ namespace PathPlanner.Node
             Parent = parent;
             CalcValueG();
             CalcValueH(end);
-            ValueF = ValueG + ValueH;
+            // ValueF = ValueG + ValueH;
         }
         public Collection<Node> SreachChildren(float step, int branch, Vector2 end)
         {
@@ -66,6 +66,18 @@ namespace PathPlanner.Node
             double errorX = Position.X - end.X;
             double errorY = Position.Y - end.Y;
             ValueH = Math.Sqrt(errorX * errorX + errorY * errorY);
+        }
+    }
+
+    class NodeComparer : IComparer<Node>
+    {
+        public int Compare(Node? x, Node? y)
+        {
+            if (x == null || y == null)
+            {
+                throw new ArgumentNullException("Node objects cannot be null");
+            }
+            return x.ValueF.CompareTo(y.ValueF);
         }
     }
 }
