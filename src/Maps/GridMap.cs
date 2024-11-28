@@ -2,13 +2,11 @@ using System.Collections.ObjectModel;
 using System.Numerics;
 using PathPlanner.Nodes;
 
-namespace Maps.GridMap;
+namespace Maps;
 
-enum State
-{
-    UNKNOW, EMPTY, OBSTACLE, PATH, CLOSED, POINT
-}
-class GridMap
+enum State { UNKNOW, EMPTY, OBSTACLE, PATH, CLOSED, POINT }
+
+class GridMap : IGridMap
 {
     public int Rows { get; }
     public int Cols { get; }
@@ -37,23 +35,25 @@ class GridMap
         else { return false; }
     }
     public State GetState(Vector2 site) { return Grid[(int)site.X, (int)site.Y]; }
-    public void StateChange(Vector2 site, State state)
+    public bool StateChange(Vector2 site, State state)
     {
         if (IsValid(site))
         {
             Grid[(int)site.X, (int)site.Y] = state;
+            return true;
         }
+        return false;
     }
-    public void PathUpdate(Collection<Node> path)
+    public void PathUpdate(Collection<INode> path)
     {
         for (int i = 0; i < path.Count; i++)
         {
-            int x = (int)path[i].Position.X;
-            int y = (int)path[i].Position.Y;
+            int x = (int)path[i].WorldPosition.X;
+            int y = (int)path[i].WorldPosition.Y;
             Grid[x, y] = State.PATH;
         }
     }
-    public State[,] Creat(int[,] arr)
+    private State[,] Creat(int[,] arr)
     {
         State[,] map = new State[Rows, Cols];
         for (int i = 0; i < Rows; i++)
@@ -65,15 +65,10 @@ class GridMap
         }
         return map;
     }
-    private State NumToState(int i)
+    private State NumToState(int i) => i switch
     {
-        switch (i)
-        {
-            case 0:
-                return State.EMPTY;
-            case 1:
-                return State.OBSTACLE;
-        }
-        return State.UNKNOW;
-    }
+        0 => State.EMPTY,
+        1 => State.OBSTACLE,
+        _ => State.UNKNOW,
+    };
 }
