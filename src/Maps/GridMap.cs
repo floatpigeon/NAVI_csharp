@@ -8,14 +8,16 @@ enum State { UNKNOW, EMPTY, OBSTACLE, PATH, CLOSED, POINT }
 
 class GridMap : IGridMap
 {
+    const int GridSize = 1;
     public int Rows { get; }
     public int Cols { get; }
-    public int GridSize { get; }
+    public int Gridsize { get => GridSize; }
     public State[,] Grid { get; private set; }
-    public GridMap(int row, int col, int[,] arr)
+
+    public GridMap(int[,] arr)
     {
-        Rows = row;
-        Cols = col;
+        Rows = arr.GetLength(0);
+        Cols = arr.GetLength(1);
         Grid = Creat(arr);
     }
     public GridMap(State[,] arr)
@@ -47,8 +49,8 @@ class GridMap : IGridMap
     public State GetState(Vector2 site) { return Grid[(int)site.X, (int)site.Y]; }
     public Vector2 PositionInWorldToGrid(Vector2 WorldPosition)
     {
-        int x = (int)(WorldPosition.X / GridSize + 0.5);
-        int y = (int)(WorldPosition.Y / GridSize + 0.5);
+        int x = (int)Math.Round(WorldPosition.X / GridSize, MidpointRounding.AwayFromZero);
+        int y = (int)Math.Round(WorldPosition.Y / GridSize, MidpointRounding.AwayFromZero);
         return new Vector2(x, y);
     }
     public void PathUpdate(INode? node)
@@ -64,7 +66,7 @@ class GridMap : IGridMap
         State[,] map = new State[Rows, Cols];
         for (int i = 0; i < Rows; i++)
         {
-            for (int j = 0; j < Cols; i++)
+            for (int j = 0; j < Cols; j++)
             {
                 map[i, j] = NumToState(arr[i, j]);
             }
