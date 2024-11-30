@@ -10,6 +10,7 @@ class GridMap : IGridMap
 {
     public int Rows { get; }
     public int Cols { get; }
+    public int GridSize { get; }
     public State[,] Grid { get; private set; }
     public GridMap(int row, int col, int[,] arr)
     {
@@ -34,7 +35,6 @@ class GridMap : IGridMap
 
         else { return false; }
     }
-    public State GetState(Vector2 site) { return Grid[(int)site.X, (int)site.Y]; }
     public bool StateChange(Vector2 site, State state)
     {
         if (IsValid(site))
@@ -44,13 +44,19 @@ class GridMap : IGridMap
         }
         return false;
     }
-    public void PathUpdate(Collection<INode> path)
+    public State GetState(Vector2 site) { return Grid[(int)site.X, (int)site.Y]; }
+    public Vector2 PositionInWorldToGrid(Vector2 WorldPosition)
     {
-        for (int i = 0; i < path.Count; i++)
+        int x = (int)(WorldPosition.X / GridSize + 0.5);
+        int y = (int)(WorldPosition.Y / GridSize + 0.5);
+        return new Vector2(x, y);
+    }
+    public void PathUpdate(INode? node)
+    {
+        while (node != null)
         {
-            int x = (int)path[i].WorldPosition.X;
-            int y = (int)path[i].WorldPosition.Y;
-            Grid[x, y] = State.PATH;
+            StateChange(PositionInWorldToGrid(node.WorldPosition), State.PATH);
+            node = node.Parent;
         }
     }
     private State[,] Creat(int[,] arr)

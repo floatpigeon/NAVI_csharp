@@ -8,10 +8,12 @@ interface IGridMap
 {
     int Rows { get; }
     int Cols { get; }
+    int GridSize { get; }
     State[,] Grid { get; }
     void Show();
     bool IsValid(Vector2 position);
-    State GetState(Vector2 site);
     bool StateChange(Vector2 site, State state);
-    void PathUpdate(Collection<INode> path);
+    State GetState(Vector2 site);
+    Vector2 PositionInWorldToGrid(Vector2 WorldPotion);
+    void PathUpdate(INode path);
 }
