@@ -7,11 +7,13 @@ namespace PathPlanner.HybridAstar;
 class HybridAstar
 {
     public HybridAstar(GridMap map) { Map = map; }
+    public HybridAstar(int[,] arr) { Map = new(arr); }
     public INode? PathSearch(Vector2 Begin, Vector2 End)
     {
         OpenList = new();
-        Node BeginNode = new(Begin, null);
         Node.EndPosition = End;
+        Node BeginNode = new(Begin, null);
+
         OpenList.Enqueue(BeginNode, BeginNode.TotalCost);
 
         while (OpenList.Count != 0)

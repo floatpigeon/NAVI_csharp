@@ -35,11 +35,16 @@ class Node : INode
             Collection<INode> children = new();
             if (this.ValueH <= step)
             {
+                Console.WriteLine("Find it");
+                Console.WriteLine(WorldPosition);
+
                 Node EndNode = new(EndPosition, this);
                 children.Add(EndNode);
+                return children;
             }
             for (int i = 0; i < branch; i++)
             {
+                // Console.WriteLine("Searching");
                 double angle = i / branch * 2.0 * Math.PI;
                 var (Sin, Cos) = Math.SinCos(angle * step);
                 children.Add(new Node(WorldPosition + step * new Vector2((float)Sin, (float)Cos), this));
@@ -62,6 +67,8 @@ class Node : INode
         double errorX = WorldPosition.X - EndPosition.X;
         double errorY = WorldPosition.Y - EndPosition.Y;
         ValueH = Math.Sqrt(errorX * errorX + errorY * errorY);
+        // Console.WriteLine("{0},{1},{2}", errorX, errorY, ValueH);
+        // Console.WriteLine(WorldPosition);
     }
 
 }
