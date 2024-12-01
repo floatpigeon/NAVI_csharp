@@ -11,15 +11,15 @@ class Node : INode
     {
         WorldPosition = Positon;
         Parent = parent;
-        CalcValueG();
         CalcValueH();
+        CalcValueG();
     }
     public Node(float x, float y, INode? parent)
     {
         WorldPosition = new Vector2(x, y);
         Parent = parent;
-        CalcValueG();
         CalcValueH();
+        CalcValueG();
     }
     public static Vector2 EndPosition;
     public Vector2 WorldPosition { get; private set; }
@@ -42,19 +42,28 @@ class Node : INode
                 children.Add(EndNode);
                 return children;
             }
-            for (int i = 0; i < branch; i++)
+            else
             {
-                // Console.WriteLine("Searching");
-                double angle = i / branch * 2.0 * Math.PI;
-                var (Sin, Cos) = Math.SinCos(angle * step);
-                children.Add(new Node(WorldPosition + step * new Vector2((float)Sin, (float)Cos), this));
+                for (int i = 0; i < branch; i++)
+                {
+                    // Console.WriteLine("Searching");
+                    double angle = i / branch * 2.0 * Math.PI;
+                    var (Sin, Cos) = Math.SinCos(angle * step);
+                    children.Add(new Node(WorldPosition + step * new Vector2((float)Sin, (float)Cos), this));
+                }
+                return children;
             }
-            return children;
         }
     }
     private void CalcValueG()
     {
         if (Parent == null) { ValueG = 0; }
+        else if (ValueH < step)
+        {
+            double errorAngle = Math.Abs(Angle - Parent.Angle);
+            double turnPunish = Math.Log(1 + errorAngle);
+            ValueG = ValueH + 0.2 * turnPunish + Parent.TotalCost;
+        }
         else
         {
             double errorAngle = Math.Abs(Angle - Parent.Angle);

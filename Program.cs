@@ -19,7 +19,7 @@ class Program
             {1,0,0,0,0,0,0,1},
             {1,0,0,0,0,0,0,1},
             {1,1,1,1,1,1,1,1},
-    };
+        };
 
         HybridAstar PathPlanner = new(arr);
         Vector2 begin = new(1, 1);
