@@ -73,10 +73,14 @@ class GridMap : IGridMap
         }
         return map;
     }
-    private State NumToState(int i) => i switch
+    private State NumToState(int i)
     {
-        0 => State.EMPTY,
-        1 => State.OBSTACLE,
-        _ => State.UNKNOW,
-    };
+        return i switch
+        {
+            0 => State.EMPTY,
+            1 => State.OBSTACLE,
+            _ => State.UNKNOW,
+        };
+    }
+
 }
